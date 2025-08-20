@@ -1,0 +1,6 @@
+id,podcast_id,episode_id,user_id,rating,content,timestamp
+1,1,5,101,5,"This episode was amazing, very insightful!",2024-10-10 12:30:00
+2,2,3,102,4,"I really enjoyed this podcast, but it could have had more details.",2024-10-09 14:00:00
+3,1,5,103,3,"The podcast was good, but I expected more from the episode.",2024-10-08 09:15:00
+4,3,6,104,5,"This was exactly what I needed to hear. Great job!",2024-10-07 18:45:00
+5,4,3,105,2,"Unfortunately, this episode didn't live up to my expectations.",2024-10-06 20:10:00

@@ -1,0 +1,66 @@
+{% extends 'layout.html' %} {% block content %}
+<main id="main">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="title">
+        <h1>CS235 Podcast Library</h1>
+        <h4>atel215 | gsan089 | fmeh174</h4>
+        <hr>
+    </div>
+    <p>
+        Welcome to... our eeeeevil lair of podcasts! <!--Melt your brain! Endless fortune!
+    </p>
+    / <br />
+    <p>
+        Muahahahahahah
+    </p>
+    <br />
+    <p>
+        What are you doing rn........ listening ? freak
+    </p>-->
+    <div id="card">
+        <h1>Weekly Picks</h1>
+        <div class="wrapper">
+            <div class="box-area">
+                <div class="box">
+                    <img alt="You Have To Wear Something" src="http://is4.mzstatic.com/image/thumb/Music118/v4/fb/4d/4c/fb4d4c53-a117-bb50-82da-98d2690235fc/source/600x600bb.jpg">
+                    <div class="overlay">
+                        <h3>You Have To Wear Something</h3>
+                        <p>English | Society | Culture</p>
+                        <p>Nicole Briggs educates, empowers and entertains culturally through fashion and style.</p>
+                        <a href="{{ url_for('podcasts_bp.podcast_detail', id=34) }}">Listen Now</a>
+                    </div>
+                </div>
+                <div class="box">
+                    <img alt="Cyber Shots" src="http://is1.mzstatic.com/image/thumb/Music128/v4/23/94/c0/2394c050-c1cf-ccbc-c2ab-c2a2e0fb9716/source/600x600bb.jpg">
+                    <div class="overlay">
+                        <h3>Cyber Shots</h3>
+                        <p>Life | English | Comedy</p>
+                        <p>This is going to be a show about comedy food health Investments and basically just all around enjoying.</p>
+                        <a href="{{ url_for('podcasts_bp.podcast_detail', id=370) }}">Listen Now</a>
+                    </div>
+                </div>
+                <div class="box">
+                    <img alt="The Reservoir Tapes" src="http://is5.mzstatic.com/image/thumb/Music118/v4/8e/97/40/8e97404a-1904-ef83-dfaf-3b2d90938de6/source/600x600bb.jpg">
+                    <div class="overlay">
+                        <h3>The Reservoir Tapes</h3>
+                        <p>English | Arts | Performing Arts</p>
+                        <p>Short story series by Jon McGregor set in the Peak District.</p>
+                        <a href="{{ url_for('podcasts_bp.podcast_detail', id=999) }}">Listen Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

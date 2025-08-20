@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="title">
+    <h1>CS235 Podcast Library</h1>
+    <h4>atel215 | gsan089 | fmeh174</h4>
+    <hr>
+</div>
+<div class="podcast-container">
+    <div class="podcast-image">
+        <img src="{{ podcast.image }}" alt="{{ podcast.title }}">
+    </div>
+
+    <div class="episode-details">
+        <h1>{{ episode["title"] }}</h1>
+
+        {% if user_playlist != None%}
+            {% if episode in user_playlist.episodes %}
+                <!-- Link to remove the episode from the playlist -->
+                <a href="{{ url_for('playlists_bp.remove_episode', playlist_id=user_playlist.id, episode_id=episode['id']) }}">
+                    Remove from Playlist
+                </a>
+            {% else %}
+                <!-- Link to add the episode to the playlist -->
+                <a href="{{ url_for('playlists_bp.add_episode_to_playlist', episode_id=episode['id']) }}" class="overlay-catalog-button">
+                    Add to Playlist
+                </a>
+            {% endif %}
+        {% elif 'user_name' not in session %}
+            <!-- If the user is not logged in, prompt them to log in -->
+            <p>
+                <a href="{{ url_for('authentication_bp.login') }}">Log in</a> to create a playlist and add this episode.
+            </p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="reviews-container">
+    <h2>Reviews</h2>
+    <a href="{{ url_for('episodes_bp.review_on_episode', podcast=podcast['id'], episode=episode['id']) }}">Leave Review</a>
+    <div class="review-list">
+    {% for review in reviews %}
+            <div class="review-card">
+                <div class="review-content">
+                    <h3>{{ review["user_name"] }}</h3>
+                    <div class="review-content2">
+                    <p>{{ "Rating: " }} {{ review["rating"] }} {{ "Stars" }}</p>
+                    <p>{{ review["content"] }}</p>
+                    </div>
+                    <p>{{ review["timestamp"] }}</p>
+                </div>
+            </div>
+        {% else %}
+            <p>No reviews yet :(</p>
+    {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('episodes_bp.episode_detail', podcast_id=podcast['id'], episode_id=episode['id'], page=page-1) }}">&lt;&nbsp;</a>
+        {% endif %}
+        <span> Page {{ page }} of {{ total_pages }} </span>
+        {% if page < total_pages %}
+            <a href="{{ url_for('episodes_bp.episode_detail', podcast_id=podcast['id'], episode_id=episode['id'], page=page+1) }}">&nbsp;&gt;</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

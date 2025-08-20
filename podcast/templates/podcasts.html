@@ -1,0 +1,121 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <main id="main">
+        <header id="podcast-header">
+            <h1>{{ podcasts_title }}</h1>
+        </header>
+
+        <form id="search-form" action="{{ url_for('podcasts_bp.search_podcast') }}" method="GET">
+            <div>
+                <label for="search">Search Podcasts:</label>
+                <input type="text" id="search" name="query" placeholder="Search for podcasts..." value="{{ request.args.get('query', '') }}">
+            </div>
+            <div>
+                <label for="filter">Filter By:</label>
+                <select id="filter" name="filter">
+                    <option value="title" {% if request.args.get('filter') == 'title' %}selected{% endif %}>Title</option>
+                    <option value="category" {% if request.args.get('filter') == 'category' %}selected{% endif %}>Category</option>
+                    <option value="author" {% if request.args.get('filter') == 'author' %}selected{% endif %}>Author</option>
+                </select>
+            </div>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if query %}
+        {% if search_results and search_results|length > 0 %}
+            <div class="wrapper">
+            <div class="boxP-area">
+                {% for podcast in search_results %}
+                    <div class="boxP" style="background-image: url('{{ podcast['image'] }}');">
+                        <div class="overlay-catalog">
+                            <h3>{{ podcast['title'] }}</h3>
+                            <a href="{{ url_for('podcasts_bp.podcast_detail', id=podcast['id']) }}">Listen Now</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            </div>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+        {% endif %}
+
+
+        <div id="cardP">
+            <div class="wrapper">
+                <div class="boxP-area">
+                    {% for podcast in podcasts %}
+                        <div class="boxP" style="background-image: url('{{ podcast['image'] }}');">
+                            <div class="overlay-catalog">
+                                <h3>{{ podcast['title'] }}</h3>
+                                <a href="{{ url_for('podcasts_bp.podcast_detail', id=podcast['id']) }}">Listen Now</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {% if total_pages > 1 %}
+            <nav aria-label="Page navigation" class="pagination-container">
+                <ul class="pagination">
+                    {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{% if query %}{{ url_for('podcasts_bp.search_podcast', query=query, filter=filter_by, page=page-1) }}{% else %}{{ url_for('podcasts_bp.browse_podcast', page=page-1) }}{% endif %}"
+                               aria-label="Previous">
+                                &laquo;
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% set start_page = max(page - 4, 1) %}
+                    {% set end_page = min(page + 4, total_pages) %}
+
+                    {% if start_page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{% if query %}{{ url_for('podcasts_bp.search_podcast', query=query, filter=filter_by, page=1) }}{% else %}{{ url_for('podcasts_bp.browse_podcast', page=1) }}{% endif %}">
+                                1
+                            </a>
+                        </li>
+                        {% if start_page > 2 %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                    {% endif %}
+
+                    {% for p in range(start_page, end_page + 1) %}
+                        <li class="page-item {% if p == page %}active{% endif %}">
+                            <a class="page-link"
+                               href="{% if query %}{{ url_for('podcasts_bp.search_podcast', query=query, filter=filter_by, page=p) }}{% else %}{{ url_for('podcasts_bp.browse_podcast', page=p) }}{% endif %}">
+                                {{ p }}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {% if end_page < total_pages %}
+                        {% if end_page < total_pages - 1 %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{% if query %}{{ url_for('podcasts_bp.search_podcast', query=query, filter=filter_by, page=total_pages) }}{% else %}{{ url_for('podcasts_bp.browse_podcast', page=total_pages) }}{% endif %}">
+                                {{ total_pages }}
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="{% if query %}{{ url_for('podcasts_bp.search_podcast', query=query, filter=filter_by, page=page+1) }}{% else %}{{ url_for('podcasts_bp.browse_podcast', page=page+1) }}{% endif %}"
+                               aria-label="Next">
+                                &raquo;
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </main>
+{% endblock %}

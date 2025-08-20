@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>View Playlist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Flash messages section -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <h1>{{ username }}'s Playlist </h1>
+    <hr>
+
+    <h2>Episodes in this Playlist:</h2>
+    {% if podcasts %}
+    <div class="episode-list">
+        {% for podcast, episodes in podcasts.items() %}
+            {% for episode in episodes %}
+            <div class="episode-card">
+                <div class="episode-image">
+                    <img src="{{ podcast.image }}" alt="{{ podcast.title }} Image" class="podcast-image">
+                </div>
+                <div class="episode-content">
+                    <h3>{{ episode.title }}</h3>
+                    <audio controls>
+                        <source src="{{ episode.audio_url }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <!-- Link to remove the episode from the playlist -->
+                    <a href="{{ url_for('playlists_bp.remove_episode_from_playlist', episode_id=episode.id) }}" class="btn btn-danger">
+                        Remove from Playlist
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>This playlist has no episodes yet.</p>
+    {% endif %}
+</body>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="title">
+    <h1>CS235 Podcast Library</h1>
+    <h4>atel215 | gsan089 | fmeh174</h4>
+    <hr>
+</div>
+<div class="podcast-container">
+    <div class="podcast-image">
+        <img src="{{ podcast.image }}" alt="{{ podcast.title }}">
+    </div>
+
+    <div class="podcast-details">
+        <h1>{{ podcast.title }}</h1>
+        <p><strong>Author:</strong> {{ podcast.author.name }}</p>
+        <p><strong>Description:</strong> {{ podcast.description }}</p>
+        <p><strong>Categories:</strong> {{ podcast.categories }} </p>
+        <p><strong>Language:</strong> {{ podcast.language }}</p>
+        <p><strong>Website:</strong> <a href="{{ podcast.website }}">{{ podcast.website }}</a></p>
+        <p><strong>Itunes ID:</strong> {{ podcast.itunes_id }} </p>
+        <a href="{{ url_for('playlists_bp.add_podcast_to_playlist', podcast_id=podcast.id) }}" class="overlay-catalog-button">
+            Add All Episodes to Playlist
+        </a>
+    </div>
+</div>
+
+<div class="episodes-container">
+    <h2>Episodes</h2>
+    <div class="episode-list">
+    {% for episode in episodes %}
+            <div class="episode-card" style="background-image: url('{{ podcast.image }}');">
+                <div class="episode-content">
+                    <h3>{{ episode["title"] }}</h3>
+                    <audio controls>
+                        <source src="{{ episode['audio'] }}" type="audio/mpeg">
+                    </audio>
+                    <div class="button-group" style="display: flex; gap: 20px;">
+                        <a href="{{ url_for('episodes_bp.episode_detail', podcast_id=podcast['id'], episode_id=episode['id']) }}" class="overlay-catalog-button">
+                            Review
+                        </a>
+                        <a href="{{ url_for('playlists_bp.add_episode_to_playlist', episode_id=episode['id']) }}" class="overlay-catalog-button">
+                            Add to Playlist
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No episodes yet :(</p>
+        {% endfor %}
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('podcasts_bp.podcast_detail', id=podcast['id'], page=page-1) }}">&lt;&nbsp;</a>
+        {% endif %}
+        <span> Page {{ page }} of {{ total_pages }} </span>
+        {% if page < total_pages %}
+            <a href="{{ url_for('podcasts_bp.podcast_detail', id=podcast['id'], page=page+1) }}">&nbsp;&gt;</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CS235 Podcast Library</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    </head>
+    <body>
+        {% include 'sidebar.html' %}
+        <div class="main-content">
+            <div id="profile-container">
+                <img id="profile-icon" src="{{ url_for('static', filename='usericon.png') }}" alt="Profile Icon">
+                <div id="profile-dropdown">
+                    {% if 'user_name' not in session %}
+                    <a href="{{ url_for('authentication_bp.login') }}">Log in</a>
+                    <a href="{{ url_for('authentication_bp.register') }}">Register</a>
+                    {% else %}
+                    <a href="{{ url_for('authentication_bp.logout') }}">Log out</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            {% block content %} {% endblock %}
+        </div>
+    </body>
+</html>

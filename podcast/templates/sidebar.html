@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sidebar</title>
+</head>
+<body>
+<input type="checkbox" id="toggle-sidebar" class="toggle-sidebar">
+<div class="sidebar" id="sidebar">
+    <label for="toggle-sidebar" id="toggle-btn">☰</label>
+        <img id="logo" src="{{ url_for('static', filename='logo.png') }}" alt="podcast logo" width="200" height="200">
+        <h3>Evil Pod Library</h3>
+        <a href="{{ url_for('home_bp.home') }}">Home</a>
+        <a href="{{ url_for('podcasts_bp.browse_podcast') }}">Podcasts</a>
+        <a href="{{ url_for('playlists_bp.view_playlists') }}">My Playlist</a>
+        <h3>{% if 'user_name' in session %} Hello, {{ session['user_name'] }} {% endif %}</h3>
+        <div class="footer">
+            <p>CS235 atel215 | gsan089 | fmeh174</p>
+        </div>
+    </div>
+</body>
+</html>
